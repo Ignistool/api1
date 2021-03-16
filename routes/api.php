@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\v1\Manager\AuthController;
 use App\Http\Controllers\v1\Manager\ContaController;
+use App\Http\Controllers\v1\Tenant\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,21 +22,43 @@ Route::group(['prefix' => 'v1'], function () {
     // Tenant
     Route::group(['prefix' => 'customer'], function () {
 
+        // Rotas Protegidas
+        Route::group(['middleware' => ['apiJwt']], function () {
+            Route::apiResource('usuarios', UserController::class);
+        });
+
+        // Autenticação
+        Route::group(['prefix' => 'auth'], function(){
+            Route::post('login', [AuthController::class, 'login']);
+
+            // Rotas Protegidas
+            Route::group(['middleware' => ['apiJwt']], function () {
+                Route::post('logout', [AuthController::class, 'logout']);
+                Route::post('refresh', [AuthController::class, 'refresh']);
+                Route::post('me', [AuthController::class, 'me']);
+            });
+
+        });
     });
 
     // Gerenciador
     Route::group(['prefix' => 'manager'], function () {
-        Route::apiResource('contas', ContaController::class);
+
+        // Rotas Protegidas
+        Route::group(['middleware' => ['apiJwt']], function () {
+            Route::apiResource('contas', ContaController::class);
+        });
 
         Route::group(['prefix' => 'auth'], function(){
             Route::post('login', [AuthController::class, 'login']);
-            Route::post('logout', [AuthController::class, 'logout']);
-            Route::post('refresh', [AuthController::class, 'refresh']);
-            Route::post('me', [AuthController::class, 'me']);
+
+            // Rotas Protegidas
+            Route::group(['middleware' => ['apiJwt']], function () {
+                Route::post('logout', [AuthController::class, 'logout']);
+                Route::post('refresh', [AuthController::class, 'refresh']);
+                Route::post('me', [AuthController::class, 'me']);
+            });
+
         });
     });
 });
-
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
