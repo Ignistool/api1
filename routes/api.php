@@ -17,6 +17,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['prefix' => 'v1'], function () {
+
+    // Tenant
+    Route::group(['prefix' => 'customer'], function () {
+
+    });
+
+    // Gerenciador
     Route::group(['prefix' => 'manager'], function () {
         Route::apiResource('contas', ContaController::class);
 
