@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\v1\Manager\AuthController;
 use App\Http\Controllers\v1\Manager\ContaController;
+use App\Http\Controllers\v1\Manager\UserController as ManagerUserController;
+
 use App\Http\Controllers\v1\Tenant\UserController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +50,7 @@ Route::group(['prefix' => 'v1'], function () {
         // Rotas Protegidas
         Route::group(['middleware' => ['apiJwt']], function () {
             Route::apiResource('contas', ContaController::class);
+            Route::apiResource('usuarios', ManagerUserController::class);
         });
 
         Route::group(['prefix' => 'auth'], function(){

@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Tenant\UserSeeder;
 use Illuminate\Database\Seeder;
-use Database\Seeders\Manager\UserSeeder;
 
-class DatabaseSeeder extends Seeder
+class TenantDatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class
         ]);
-
         // \App\Models\User::factory(10)->create();
     }
 }
