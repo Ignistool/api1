@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\v1\Manager\AuthController;
 use App\Http\Controllers\v1\Manager\ContaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,13 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'manager'], function () {
         Route::apiResource('contas', ContaController::class);
+
+        Route::group(['prefix' => 'auth'], function(){
+            Route::post('login', [AuthController::class, 'login']);
+            Route::post('logout', [AuthController::class, 'logout']);
+            Route::post('refresh', [AuthController::class, 'refresh']);
+            Route::post('me', [AuthController::class, 'me']);
+        });
     });
 });
 
