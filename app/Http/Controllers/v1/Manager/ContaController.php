@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1\Manager;
 use App\Http\Controllers\Controller;
 use App\Models\v1\Manager\Conta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -65,6 +66,10 @@ class ContaController extends Controller
             DB::statement("
                 CREATE DATABASE {$request->input('database')} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
             ");
+
+            Artisan::call('tenants:migration', [
+                'id' => $modelCreate->id
+            ]);
 
             return response()->json($modelCreate, 201);
         }
